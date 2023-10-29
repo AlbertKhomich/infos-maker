@@ -39,13 +39,10 @@ form.addEventListener('formdata', (e) => {
   }
   form.reset();
 
-  infosBank[0] !== ''
-    ? (resultText = resultDiv.value + transorm(infosBank))
-    : (resultText = resultDiv.value);
+  resultText = resultDiv.value + transorm(infosBank);
   resultDiv.value = resultText;
   copyToClipboard(resultText);
   msg.style.display = 'block';
-  msg.innerHTML = 'Copied to clipboard...';
   setTimeout(hideMsg, 1000);
   timeInput.focus();
 });
