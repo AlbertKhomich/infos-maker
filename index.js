@@ -12,9 +12,9 @@ timeInput.focus();
 // {b}Frauenabend{/b} am Kamp
 const transorm = function (infosArr) {
   return `
+  
   {st}${infosArr[0]}{/st}
-  {b}${infosArr[1]}{/b} ${infosArr[2]}
-  `;
+  {b}${infosArr[1]}{/b} ${infosArr[2]}`;
 };
 
 const copyToClipboard = function (text) {
