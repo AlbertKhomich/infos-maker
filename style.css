@@ -5,3 +5,7 @@
 #msg {
   display: none;
 }
+
+.btn {
+  margin-bottom: 2rem !important;
+}
