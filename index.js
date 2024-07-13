@@ -35,7 +35,7 @@ const parse = function (infos) {
     } else if (regexDate) {
       firstPart = regexDate[0].trim();
     }
-    s = s.slice(firstPart.length);
+    s = s.slice(firstPart.replace(/\bUhr:?/g, "").length);
 
     const secondRegex = s.match(/^:?(.*?)(?:\(| am | im |$)/);
     const secondPart = secondRegex ? secondRegex[1].trim() : "";
