@@ -31,7 +31,7 @@ const parse = function (infos) {
     let firstPart = "";
 
     if (regexTime) {
-      firstPart = regexTime[0].trim();
+      firstPart = `${regexTime[0].trim()} Uhr:`;
     } else if (regexDate) {
       firstPart = regexDate[0].trim();
     }
