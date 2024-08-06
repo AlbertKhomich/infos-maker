@@ -27,6 +27,7 @@ const parse = function (infos) {
 
     const regexTime = s.match(/.*?\b\d{1,2}:\d{2}\b/);
     const regexDate = s.match(/^(.*?):/);
+    const regexDateShort = s.match(/(.*\d{2}\.\d{2}\.\s)/);
 
     let firstPart = "";
 
@@ -34,7 +35,10 @@ const parse = function (infos) {
       firstPart = `${regexTime[0].trim()} Uhr:`;
     } else if (regexDate) {
       firstPart = regexDate[0].trim();
+    } else if (regexDateShort) {
+      firstPart = regexDateShort[0].trim();
     }
+
     s = s.slice(firstPart.replace(/\bUhr:?/g, "").length);
 
     const secondRegex = s.match(/^:?(.*?)(?:\(| am | im |$)/);
