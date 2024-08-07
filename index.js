@@ -32,22 +32,23 @@ const parse = function (infos) {
     let firstPart = "";
 
     if (regexTime) {
-      firstPart = `${regexTime[0].trim()} Uhr:`;
+      firstPart = regexTime[0].trim();
     } else if (regexDate) {
       firstPart = regexDate[0].trim();
     } else if (regexDateShort) {
       firstPart = regexDateShort[0].trim();
     }
 
-    s = s.slice(firstPart.replace(/\bUhr:?/g, "").length);
+    s = s.slice(firstPart.length);
 
     const secondRegex = s.match(/^:?(.*?)(?:\(| am | im |$)/);
     const secondPart = secondRegex ? secondRegex[1].trim() : "";
+
     s = s.trim().slice(secondPart.length).trim();
 
     result += `
    
-       {st}${firstPart}{/st}
+       {st}${firstPart}${regexTime ? " Uhr:" : ""}{/st}
        {b}${secondPart}{/b} ${s}`;
   });
 
@@ -60,6 +61,13 @@ const copyToClipboard = function (text) {
 
 const hideMsg = function () {
   msg.style.display = "none";
+};
+
+const giveRes = function (result) {
+  resultDiv.value = result;
+  copyToClipboard(result);
+  msg.style.display = "block";
+  setTimeout(hideMsg, 1000);
 };
 
 form.addEventListener("submit", (e) => {
@@ -82,10 +90,7 @@ form.addEventListener("formdata", (e) => {
   form.reset();
 
   resultText = resultDiv.value + transorm(infosBank);
-  resultDiv.value = resultText;
-  copyToClipboard(resultText);
-  msg.style.display = "block";
-  setTimeout(hideMsg, 1000);
+  giveRes(resultText);
   timeInput.focus();
 });
 
@@ -96,9 +101,5 @@ formParse.addEventListener("formdata", (e) => {
   infosArr = infos.split(/\r?\n/);
 
   resultText = resultDiv.value + parse(infosArr);
-  resultDiv.value = resultText;
-
-  copyToClipboard(resultText);
-  msg.style.display = "block";
-  setTimeout(hideMsg, 1000);
+  giveRes(resultText);
 });
