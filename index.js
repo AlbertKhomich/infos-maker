@@ -20,39 +20,35 @@ const transorm = function (infosArr) {
 };
 
 const parse = function (infos) {
-  let result = "";
+  return infos
+    .map((rs) => {
+      let s = rs.replace(/\bUhr:?/g, "");
 
-  infos.forEach((rs) => {
-    s = rs.replace(/\bUhr:?/g, "");
+      const regexTime = s.match(/.*?\b\d{1,2}:\d{2}\b/);
+      const regexDate = s.match(/^(.*?):/);
+      const regexDateShort = s.match(/(.*\d{2}\.\d{2}\.\s)/);
 
-    const regexTime = s.match(/.*?\b\d{1,2}:\d{2}\b/);
-    const regexDate = s.match(/^(.*?):/);
-    const regexDateShort = s.match(/(.*\d{2}\.\d{2}\.\s)/);
+      const firstPart = regexTime
+        ? regexTime[0].trim()
+        : regexDate
+        ? regexDate[0].trim()
+        : regexDateShort
+        ? regexDateShort[0].trim()
+        : "";
 
-    let firstPart = "";
+      s = s.slice(firstPart.length);
 
-    if (regexTime) {
-      firstPart = regexTime[0].trim();
-    } else if (regexDate) {
-      firstPart = regexDate[0].trim();
-    } else if (regexDateShort) {
-      firstPart = regexDateShort[0].trim();
-    }
+      const secondRegex = s.match(/^:?(.*?)(?:\(| am | im |$)/);
+      const secondPart = secondRegex ? secondRegex[1].trim() : "";
 
-    s = s.slice(firstPart.length);
+      s = s.trim().slice(secondPart.length).trim();
 
-    const secondRegex = s.match(/^:?(.*?)(?:\(| am | im |$)/);
-    const secondPart = secondRegex ? secondRegex[1].trim() : "";
-
-    s = s.trim().slice(secondPart.length).trim();
-
-    result += `
-   
+      return `
        {st}${firstPart}${regexTime ? " Uhr:" : ""}{/st}
-       {b}${secondPart}{/b} ${s}`;
-  });
-
-  return result;
+       {b}${secondPart}{/b} ${s}
+       `;
+    })
+    .join("");
 };
 
 const copyToClipboard = function (text) {
